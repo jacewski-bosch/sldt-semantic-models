@@ -1,0 +1,263 @@
+#######################################################################
+# Copyright (c) 2023 BASF SE
+# Copyright (c) 2023 Bayerische Motoren Werke Aktiengesellschaft (BMW AG)
+# Copyright (c) 2023 Fraunhofer-Gesellschaft zur Foerderung der angewandten Forschung e.V. (represented by Fraunhofer ISST & Fraunhofer IML)
+# Copyright (c) 2023 German Edge Cloud GmbH & Co. KG
+# Copyright (c) 2023 Henkel AG & Co. KGaA
+# Copyright (c) 2023 Mercedes Benz AG
+# Copyright (c) 2023 Robert Bosch Manufacturing Solutions GmbH
+# Copyright (c) 2023 SAP SE
+# Copyright (c) 2023 Siemens AG
+# Copyright (c) 2023 T-Systems International GmbH
+# Copyright (c) 2023 ZF Friedrichshafen AG
+# Copyright (c) 2023 Contributors to the Eclipse Foundation
+#
+# See the NOTICE file(s) distributed with this work for additional
+# information regarding copyright ownership.
+#
+# This work is made available under the terms of the
+# Creative Commons Attribution 4.0 International (CC-BY-4.0) license,
+# which is available at
+# https://creativecommons.org/licenses/by/4.0/legalcode.
+#
+# SPDX-License-Identifier: CC-BY-4.0
+#######################################################################
+
+@prefix samm: <urn:samm:org.eclipse.esmf.samm:meta-model:2.0.0#> .
+@prefix samm-c: <urn:samm:org.eclipse.esmf.samm:characteristic:2.0.0#> .
+@prefix samm-e: <urn:samm:org.eclipse.esmf.samm:entity:2.0.0#> .
+@prefix unit: <urn:samm:org.eclipse.esmf.samm:unit:2.0.0#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix : <urn:samm:io.catenax.adhesive.curing_time_analysis:1.0.0#> .
+
+:CuringTimeAnalysis a samm:Aspect ;
+   samm:preferredName "Curing Time Analysis"@en ;
+   samm:properties ( :setOfComponents ) ;
+   samm:operations ( ) ;
+   samm:events ( ) .
+
+:setOfComponents a samm:Property ;
+   samm:description "Adhesives are typically delivered in two or more components, that belong together. The components can have separate part identifiers but typically use the first component's part identifier for the whole set of components."@en ;
+   samm:characteristic :Component .
+
+:Component a samm-c:Collection ;
+   samm:dataType :ComponentEntity .
+
+:ComponentEntity a samm:Entity ;
+   samm:properties ( :componentName [ samm:property :densityUncured; samm:optional true ] [ samm:property :viscosity; samm:optional true ] [ samm:property :shoreAHardness; samm:optional true ] :extrusionRate :cureDepth24h :cureDepth72h :tensileStrength :elongationAtBreak :shearStrength :isAppearanceOk :tackFreeTime :additionalAnalysisResults ) .
+
+:componentName a samm:Property ;
+   samm:characteristic :ComponentName .
+
+:densityUncured a samm:Property ;
+   samm:characteristic :SpecificWeight .
+
+:viscosity a samm:Property ;
+   samm:characteristic :Viscosity .
+
+:shoreAHardness a samm:Property ;
+   samm:characteristic :ShoreAHardness .
+
+:extrusionRate a samm:Property ;
+   samm:description "a property which describes the viscosity of the material"@en ;
+   samm:characteristic :ExtrusionRate .
+
+:cureDepth24h a samm:Property ;
+   samm:description "curing speed given as cured thickness after 24h curing"@en ;
+   samm:characteristic :CureDepth24h .
+
+:cureDepth72h a samm:Property ;
+   samm:description "curing speed given as cured thickness after 72h curing"@en ;
+   samm:characteristic :CureDepth72h .
+
+:tensileStrength a samm:Property ;
+   samm:description "tensile strength given from a uniaxial bog bone test"@en ;
+   samm:characteristic :TensileStrength .
+
+:elongationAtBreak a samm:Property ;
+   samm:description "ultimate elongation given from the uniaxial tensile dog bone test"@en ;
+   samm:characteristic :ElongationAtBreak .
+
+:shearStrength a samm:Property ;
+   samm:description "material strength given from a single lap shear test"@en ;
+   samm:characteristic :ShearStrength .
+
+:isAppearanceOk a samm:Property ;
+   samm:description "subjective optical inspection of material color and homogenity"@en ;
+   samm:characteristic samm-c:Boolean .
+
+:tackFreeTime a samm:Property ;
+   samm:description "curing speed given as time of the material to build-up a closed skin"@en ;
+   samm:characteristic :TackFreeTime .
+
+:additionalAnalysisResults a samm:Property ;
+   samm:description "additional analysis results for adhesives"@en ;
+   samm:characteristic :AdditionalAnalysisResults .
+
+:ComponentName a samm:Characteristic ;
+   samm:dataType xsd:string .
+
+:SpecificWeight a samm-c:SingleEntity ;
+   samm:dataType :SpecificWeightData .
+
+:Viscosity a samm-c:SingleEntity ;
+   samm:dataType :ViscosityData .
+
+:ShoreAHardness a samm-c:SingleEntity ;
+   samm:dataType :ShoreAHardnessData .
+
+:ExtrusionRate a samm-c:SingleEntity ;
+   samm:dataType :ExtrusionRateData .
+
+:CureDepth24h a samm-c:SingleEntity ;
+   samm:dataType :CureDepth24hData .
+
+:CureDepth72h a samm-c:SingleEntity ;
+   samm:dataType :CureDepth72hData .
+
+:TensileStrength a samm-c:SingleEntity ;
+   samm:dataType :TensileStrengthData .
+
+:ElongationAtBreak a samm-c:SingleEntity ;
+   samm:dataType :ElongationAtBreakData .
+
+:ShearStrength a samm-c:SingleEntity ;
+   samm:dataType :ShearStrengthData .
+
+:TackFreeTime a samm-c:SingleEntity ;
+   samm:dataType :TackFreeTimeData .
+
+:AdditionalAnalysisResults a samm-c:List ;
+   samm:preferredName "Additional Analysis Results"@en ;
+   samm:dataType :AnalysisResult .
+
+:SpecificWeightData a samm:Entity ;
+   samm:extends :ValueWithLimits ;
+   samm:properties ( [ samm:extends :measuredValue; samm:characteristic :SpecificWeightCharacteristic ] [ samm:extends :lowerLimit; samm:characteristic :SpecificWeightCharacteristic ] [ samm:extends :upperLimit; samm:characteristic :SpecificWeightCharacteristic ] ) .
+
+:ViscosityData a samm:Entity ;
+   samm:extends :ValueWithLimits ;
+   samm:properties ( [ samm:extends :measuredValue; samm:characteristic :ViscosityCharacteristic ] [ samm:extends :lowerLimit; samm:characteristic :ViscosityCharacteristic ] [ samm:extends :upperLimit; samm:characteristic :ViscosityCharacteristic ] ) .
+
+:ShoreAHardnessData a samm:Entity ;
+   samm:extends :ValueWithLimits ;
+   samm:properties ( [ samm:extends :measuredValue; samm:characteristic :ShoreAHardnessCharacteristic ] [ samm:extends :lowerLimit; samm:characteristic :ShoreAHardnessCharacteristic ] [ samm:extends :upperLimit; samm:characteristic :ShoreAHardnessCharacteristic ] ) .
+
+:ExtrusionRateData a samm:Entity ;
+   samm:extends :ValueWithLimits ;
+   samm:properties ( [ samm:extends :measuredValue; samm:characteristic :ExtrisionRateCharacteristic ] [ samm:extends :lowerLimit; samm:characteristic :ExtrisionRateCharacteristic ] [ samm:extends :upperLimit; samm:characteristic :ExtrisionRateCharacteristic ] ) .
+
+:CureDepth24hData a samm:Entity ;
+   samm:extends :ValueWithLimits ;
+   samm:properties ( [ samm:extends :measuredValue; samm:characteristic :CureDepth24hCharacteristic ] [ samm:extends :lowerLimit; samm:characteristic :CureDepth24hCharacteristic ] [ samm:extends :upperLimit; samm:characteristic :CureDepth24hCharacteristic ] ) .
+
+:CureDepth72hData a samm:Entity ;
+   samm:extends :ValueWithLimits ;
+   samm:properties ( [ samm:extends :measuredValue; samm:characteristic :CureDepth72hCharacteristic ] [ samm:extends :lowerLimit; samm:characteristic :CureDepth72hCharacteristic ] [ samm:extends :upperLimit; samm:characteristic :CureDepth72hCharacteristic ] ) .
+
+:TensileStrengthData a samm:Entity ;
+   samm:extends :ValueWithLimits ;
+   samm:properties ( [ samm:extends :measuredValue; samm:characteristic :TensileStrengthCharacteristic ] [ samm:extends :lowerLimit; samm:characteristic :TensileStrengthCharacteristic ] [ samm:extends :upperLimit; samm:characteristic :TensileStrengthCharacteristic ] ) .
+
+:ElongationAtBreakData a samm:Entity ;
+   samm:extends :ValueWithLimits ;
+   samm:properties ( [ samm:extends :measuredValue; samm:characteristic :ElongationAtBreakCharacteristic ] [ samm:extends :lowerLimit; samm:characteristic :ElongationAtBreakCharacteristic ] [ samm:extends :upperLimit; samm:characteristic :ElongationAtBreakCharacteristic ] ) .
+
+:ShearStrengthData a samm:Entity ;
+   samm:extends :ValueWithLimits ;
+   samm:properties ( [ samm:extends :measuredValue; samm:characteristic :ShearStrengthCharacteristic ] [ samm:extends :upperLimit; samm:characteristic :ShearStrengthCharacteristic ] [ samm:extends :lowerLimit; samm:characteristic :ShearStrengthCharacteristic ] ) .
+
+:TackFreeTimeData a samm:Entity ;
+   samm:extends :ValueWithLimits ;
+   samm:properties ( [ samm:extends :measuredValue; samm:characteristic :TackFreeTimeCharacteristic ] [ samm:extends :lowerLimit; samm:characteristic :TackFreeTimeCharacteristic ] [ samm:extends :upperLimit; samm:characteristic :TackFreeTimeCharacteristic ] ) .
+
+:AnalysisResult a samm:Entity ;
+   samm:extends :ValueWithLimits ;
+   samm:preferredName "Analysis Result"@en ;
+   samm:properties ( [ samm:extends :measuredValue; samm:characteristic :AdditionalValueCharacteristic ] [ samm:extends :lowerLimit; samm:characteristic :AdditionalValueCharacteristic ] [ samm:extends :upperLimit; samm:characteristic :AdditionalValueCharacteristic ] :measurementUnit :measurementName :datatype ) .
+
+:ValueWithLimits a samm:AbstractEntity ;
+   samm:properties ( :measuredValue :lowerLimit :upperLimit ) .
+
+:measuredValue a samm:AbstractProperty ;
+   samm:preferredName "Measured value"@en ;
+   samm:description "the measured result of the analysis"@en .
+
+:SpecificWeightCharacteristic a samm-c:Measurement ;
+   samm:dataType xsd:float ;
+   samm-c:unit unit:gramPerCubicCentimetre .
+
+:lowerLimit a samm:AbstractProperty ;
+   samm:preferredName "Lower limit"@en ;
+   samm:description "the lower limit as specified by the specification"@en .
+
+:upperLimit a samm:AbstractProperty ;
+   samm:preferredName "Upper limit"@en ;
+   samm:description "the upper limit as specified in the specification"@en .
+
+:ViscosityCharacteristic a samm-c:Measurement ;
+   samm:dataType xsd:double ;
+   samm-c:unit unit:millipascalSecond .
+
+:ShoreAHardnessCharacteristic a samm:Characteristic ;
+   samm:dataType xsd:decimal .
+
+:ExtrisionRateCharacteristic a samm-c:Measurement ;
+   samm:dataType xsd:float ;
+   samm-c:unit unit:gramPerMinute .
+
+:CureDepth24hCharacteristic a samm-c:Measurement ;
+   samm:dataType xsd:float ;
+   samm-c:unit unit:millimetre .
+
+:CureDepth72hCharacteristic a samm-c:Measurement ;
+   samm:dataType xsd:float ;
+   samm-c:unit unit:millimetre .
+
+:TensileStrengthCharacteristic a samm-c:Measurement ;
+   samm:dataType xsd:float ;
+   samm-c:unit unit:megapascal .
+
+:ElongationAtBreakCharacteristic a samm-c:Measurement ;
+   samm:dataType xsd:float ;
+   samm-c:unit unit:percent .
+
+:ShearStrengthCharacteristic a samm-c:Measurement ;
+   samm:dataType xsd:float ;
+   samm-c:unit unit:megapascal .
+
+:TackFreeTimeCharacteristic a samm-c:Measurement ;
+   samm:dataType xsd:float ;
+   samm-c:unit unit:minuteUnitOfTime .
+
+:AdditionalValueCharacteristic a samm:Characteristic ;
+   samm:preferredName "Addtional Value Characteristic"@en ;
+   samm:description "The value for additional property conversed to xsd:string."@en ;
+   samm:dataType xsd:string .
+
+:measurementUnit a samm:Property ;
+   samm:characteristic samm-c:UnitReference ;
+   samm:exampleValue "unit:millimetre"^^samm:curie .
+
+:measurementName a samm:Property ;
+   samm:description "Name of the analysis result, using lower camel case notation."@en ;
+   samm:characteristic :MeasurementName ;
+   samm:exampleValue "cureDepth48h" .
+
+:datatype a samm:Property ;
+   samm:description "Data type that describe the content of the attributes measuredValue, lowerLimit, and upperLimit ."@en ;
+   samm:characteristic :XsdDatatypeEnumeration ;
+   samm:exampleValue "xsd:float" .
+
+:MeasurementName a samm:Characteristic ;
+   samm:see <https://google.github.io/styleguide/javaguide.html#s5.3-camel-case> ;
+   samm:dataType xsd:string .
+
+:XsdDatatypeEnumeration a samm-c:Enumeration ;
+   samm:description "All SAMM 2.0.0 data types other than \"Entity\" and any \"Limited-range integer numbers\". For any of  the \"Limited-range integer numbers\" use \"xsd:integer\"."@en ;
+   samm:see <https://eclipse-esmf.github.io/samm-specification/snapshot/datatypes.html> ;
+   samm:dataType xsd:string ;
+   samm-c:values ( "xsd:string" "xsd:boolean" "xsd:decimal" "xsd:integer" "xsd:double" "xsd:float" "xsd:date" "xsd:time" "xsd:dateTime" "xsd:dateTimeStamp" "xsd:gYear" "xsd:gMonth" "xsd:gDay" "xsd:gYearMonth" "xsd:gMonthDay" "xsd:duration" "xsd:yearMonthDuration" "xsd:dayTimeDuration" "xsd:hexBinary" "xsd:base64Binary" "xsd:anyURI" "samm:curie" "rdf:langString" ) .
+
